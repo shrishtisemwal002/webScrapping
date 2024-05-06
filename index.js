@@ -1,8 +1,14 @@
 //puppeteer library for extracting data
 import puppeteer from 'puppeteer'
 
+//dotenv library to store login credentials
+import dotEnv from 'dotenv';
+
 //xlsx library to convert the array into excel sheet
 import * as XLSX from 'xlsx';
+
+//specifying the path of env file
+dotEnv.config({path:"./config.env"})
 
 //function to launch the puppeteer library and to login to linkedin dynamically and extract data
 const getData = async () => {  
@@ -32,10 +38,14 @@ const getData = async () => {
   
     //for intentional delays in the process
     await new Promise(resolve => setTimeout(resolve, 2000));
-  
+
+    //extracting username and password from env file
+    const username = process.env.USER;
+    const password = process.env.PASSWORD;
+
     //dynamically loging in linkedin
-    await page.type('#username', 'shrishti161616@gmail.com');
-    await page.type('#password', 'ss@161002');
+    await page.type('#username', username);
+    await page.type('#password', password);
   
      //for intentional delays in the process
     await new Promise(resolve => setTimeout(resolve, 2000));
