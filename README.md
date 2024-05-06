@@ -12,9 +12,15 @@ Install dependencies
 
 npm install
 
-To reun the script
+To run the script
 
 node index.js
+
+Create a .env file in the root directory with the following format:
+USER=your_linkedin_username
+PASSWORD=your_linkedin_password
+
+Replace your_linkedin_username and your_linkedin_password with your actual LinkedIn login credentials.
 
 The script will launch a headless browser, log in to LinkedIn, perform a search for specified keywords, apply filters, and extract company data from the search results. The extracted data will be stored in an Excel file named data.xlsx.
 
