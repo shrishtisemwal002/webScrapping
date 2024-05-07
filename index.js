@@ -99,6 +99,7 @@ const getData = async () => {
 
       await new Promise(resolve => setTimeout(resolve, 2000));
 
+      //to click on the filter drop down
       await filter.click();
     
       if (id !== '#searchFilter_companySize') {
@@ -129,6 +130,7 @@ const getData = async () => {
         await page.waitForSelector(tag);
     
         let employeeSize = await page.$(tag);
+
         await new Promise(resolve => setTimeout(resolve, 2000));
         await employeeSize.click();
     
@@ -142,7 +144,7 @@ const getData = async () => {
       }
     }
 
-      let count = 20; // counter for getting the data of multiple pages
+      let count = 2; // counter for getting the data of multiple pages
       let storeData = []; // an array is created to store the data objects
 
       while (count > 0) {
@@ -161,13 +163,14 @@ const getData = async () => {
 
         //getting the links of all the lists
         await page.waitForSelector('span span a');
+
+        //accessing all the anchor tags present in one page
         let lists = await resultLists[0].$$("span span a");
 
-        console.log(lists);
-
+        //iterating through each company link  
         for (const list of lists) {
 
-          //accessing the href link of all each anchor tag one by one.
+          //accessing the href link of each anchor tag one by one.
           let link = await page.evaluate(list => list.getAttribute('href'), list);
 
            //for intentional delays in the process
@@ -186,16 +189,19 @@ const getData = async () => {
           let dataTag = await aboutPage.$$('dt');
     
           let dataArray = ['Website', 'Company size', 'Headquarters'];
+
           //object to store the data of each comapny link 
           let listData = {};
           
           //for getting the name of the company
           let companyNameHeading = await aboutPage.$('h1');
+
           if(companyNameHeading){
             let companyName = await companyNameHeading.evaluate(element => element.innerText);
             listData["Company Name"] = companyName;
           }
           
+          //iterating over all the dt tags and storing only the required ones 
           for (const data of dataTag) {
     
             let dataText = await aboutPage.evaluate(dataText => dataText.innerText.trim(), data);
@@ -245,7 +251,6 @@ function jsToExcel(storeData) {
   const workbook = XLSX.utils.book_new();
   const worksheet = XLSX.utils.json_to_sheet(storeData);
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-
   XLSX.writeFile(workbook, "data.xlsx");
 }
 
